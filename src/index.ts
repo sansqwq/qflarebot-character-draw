@@ -21,7 +21,11 @@ export default definePlugin<Config>({
   defaultConfig: { characters: '太刀侠\n0大人\n蒸蛋\n邦尼\n雪莉\n露露\n蓝海晴' },
   events: {
     'qq.group.at_message': ({ session, ctx }) => {
-      if (!session.atMe || session.addressedToOthers || session.content.trim()) return
+      if (!session.atMe || session.addressedToOthers) return
+      const content = session.content.trim()
+      if (content && !/^抽角色[\s！!。.?？]*$/.test(content)) {
+        return '当前看板娘只支持抽角色喵'
+      }
       const entries = ctx.config.characters.split(/\r?\n/).map(line => line.trim()).filter(Boolean)
       if (!entries.length) return '角色池还是空的，请在机器人面板中添加角色。'
       const [name, image] = entries[Math.floor(Math.random() * entries.length)]!.split('|').map(s => s.trim())
