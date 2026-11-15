@@ -23,7 +23,7 @@ export default definePlugin<Config>({
     'qq.group.at_message': ({ session, ctx }) => {
       if (!session.atMe || session.addressedToOthers) return
       const content = session.content.trim()
-      if (content && !/^抽角色[\s！!。.?？]*$/.test(content)) {
+      if (content && !/^(?:抽角色|换一个)[\s！!。.?？]*$/.test(content)) {
         return '当前看板娘只支持抽角色喵'
       }
       const entries = ctx.config.characters.split(/\r?\n/).map(line => line.trim()).filter(Boolean)
