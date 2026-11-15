@@ -20,7 +20,7 @@ export default definePlugin<Config>({
   },
   defaultConfig: { characters: '太刀侠\n0大人\n蒸蛋\n邦尼\n雪莉\n露露\n蓝海晴' },
   events: {
-    'qq.group.at_message': ({ session, ctx }) => {
+    'qq.group.at_message': async ({ session, ctx }) => {
       if (!session.atMe || session.addressedToOthers) return
       const content = session.content.trim()
       if (content && !/^(?:抽角色|换一个)[\s！!。.?？]*$/.test(content)) {
@@ -30,9 +30,9 @@ export default definePlugin<Config>({
       if (!entries.length) return '角色池还是空的，请在机器人面板中添加角色。'
       const [name, image] = entries[Math.floor(Math.random() * entries.length)]!.split('|').map(s => s.trim())
       if (!name) return '角色配置有误，请在面板中检查。'
-      return image && /^https:\/\//i.test(image)
-        ? { text: `你抽到了：${name}`, image: { url: image } }
-        : `你抽到了：${name}`
+      if (!image || !/^https:\/\//i.test(image)) return `你抽到了：${name}`
+      const result = await session.reply({ text: `你抽到了：${name}`, image: { url: image } })
+      if (!result.ok) return `你抽到了：${name}（图片发送失败，请再试一次喵）`
     },
   },
 })
