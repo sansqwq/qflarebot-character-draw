@@ -1,0 +1,39 @@
+{
+  "name": "character-draw",
+  "version": "0.1.0",
+  "apiVersion": 1,
+  "permissions": [],
+  "depends": {},
+  "conflicts": [],
+  "commands": [],
+  "regex": [],
+  "events": [
+    {
+      "event": [
+        "qq.group.at_message"
+      ]
+    }
+  ],
+  "buttons": [],
+  "cron": [],
+  "routes": [],
+  "hasMiddleware": false,
+  "services": [],
+  "durableObjects": [],
+  "displayName": "随机抽角色",
+  "description": "群里单独 @ 机器人时随机抽取一个角色。",
+  "configSchema": {
+    "type": "object",
+    "properties": {
+      "characters": {
+        "type": "string",
+        "format": "textarea",
+        "title": "角色列表",
+        "description": "每行一个角色，格式：角色名 | 图片直链；没有图片时只写名字。"
+      }
+    }
+  },
+  "defaultConfig": {
+    "characters": "太刀侠\n0大人\n蒸蛋\n邦尼\n雪莉\n露露\n蓝海晴"
+  }
+}
