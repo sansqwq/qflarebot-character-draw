@@ -1,0 +1,7 @@
+{
+  "name": "qflarebot-plugin-character-draw",
+  "version": "0.1.0",
+  "description": "群聊 @ 机器人随机抽取角色",
+  "license": "MIT",
+  "type": "module"
+}
