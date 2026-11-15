@@ -20,6 +20,7 @@ export default definePlugin<Config>({
   },
   defaultConfig: { characters: '太刀侠\n0大人\n蒸蛋\n邦尼\n雪莉\n露露\n蓝海晴' },
   events: {
+    'qq.group.robot_added': () => '哼哼，我是由美咕噜超可爱会长设计的吉星派对看板娘喵，大家可以@我来抽角色玩',
     'qq.group.at_message': async ({ session, ctx }) => {
       if (!session.atMe || session.addressedToOthers) return
       const content = session.content.trim()
