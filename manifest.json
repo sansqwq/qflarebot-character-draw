@@ -8,11 +8,8 @@
   "commands": [],
   "regex": [],
   "events": [
-    {
-      "event": [
-        "qq.group.at_message"
-      ]
-    }
+    { "event": ["qq.group.robot_added"] },
+    { "event": ["qq.group.at_message"] }
   ],
   "buttons": [],
   "cron": [],
