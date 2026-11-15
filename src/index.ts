@@ -26,7 +26,8 @@ export default definePlugin<Config>({
         ctx.logger.warn('群成员加入事件缺少成员标识，无法发送欢迎语')
         return
       }
-      const result = await session.send(`<@${session.userId}>，看板娘在这里欢迎新人进群喵，可以@我来抽角色玩喵`)
+      const text = '看板娘在这里欢迎新人进群喵，可以@我来抽角色玩喵'
+      const result = await session.send({ text, markdown: { content: `<qqbot-at-user id="${session.userId}" />，${text}` } })
       if (!result.ok) ctx.logger.warn('欢迎新人消息发送失败', { status: result.status, error: result.error })
     },
     'qq.group.at_message': async ({ session, ctx }) => {
