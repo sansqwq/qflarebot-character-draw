@@ -21,6 +21,14 @@ export default definePlugin<Config>({
   defaultConfig: { characters: '太刀侠\n0大人\n蒸蛋\n邦尼\n雪莉\n露露\n蓝海晴' },
   events: {
     'qq.group.robot_added': () => '哼哼，我是由美咕噜超可爱会长设计的吉星派对看板娘喵，大家可以@我来抽角色玩',
+    'qq.group.member_added': async ({ session, ctx }) => {
+      if (!session.userId) {
+        ctx.logger.warn('群成员加入事件缺少成员标识，无法发送欢迎语')
+        return
+      }
+      const result = await session.send(`<@${session.userId}>，看板娘在这里欢迎新人进群喵，可以@我来抽角色玩喵`)
+      if (!result.ok) ctx.logger.warn('欢迎新人消息发送失败', { status: result.status, error: result.error })
+    },
     'qq.group.at_message': async ({ session, ctx }) => {
       if (!session.atMe || session.addressedToOthers) return
       const content = session.content.trim()
