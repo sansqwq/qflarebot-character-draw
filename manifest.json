@@ -9,6 +9,7 @@
   "regex": [],
   "events": [
     { "event": ["qq.group.robot_added"] },
+    { "event": ["qq.group.member_added"] },
     { "event": ["qq.group.at_message"] }
   ],
   "buttons": [],
