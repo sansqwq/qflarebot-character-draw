@@ -8,12 +8,34 @@
   "commands": [],
   "regex": [],
   "events": [
-    { "event": ["qq.group.robot_added"] },
-    { "event": ["qq.group.member_added"] },
-    { "event": ["qq.group.at_message"] }
+    {
+      "event": [
+        "qq.group.robot_added"
+      ]
+    },
+    {
+      "event": [
+        "qq.group.robot_removed"
+      ]
+    },
+    {
+      "event": [
+        "qq.group.member_added"
+      ]
+    },
+    {
+      "event": [
+        "qq.group.at_message"
+      ]
+    }
   ],
   "buttons": [],
-  "cron": [],
+  "cron": [
+    {
+      "name": "goodnight",
+      "cron": "50 14 * * *"
+    }
+  ],
   "routes": [],
   "hasMiddleware": false,
   "services": [],
