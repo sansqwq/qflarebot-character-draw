@@ -19,8 +19,26 @@ export default definePlugin<Config>({
     },
   },
   defaultConfig: { characters: '太刀侠\n0大人\n蒸蛋\n邦尼\n雪莉\n露露\n蓝海晴' },
+  cron: {
+    goodnight: {
+      cron: '50 14 * * *', // 北京时间 22:50
+      async handler({ ctx }) {
+        for (const key of await ctx.kv.list('goodnight-group:')) {
+          const groupId = key.slice('goodnight-group:'.length)
+          const result = await ctx.api.sendMessage({ scene: 'group', id: groupId }, 'emm...看板娘有点困了，大家晚安啦')
+          if (!result.ok) ctx.logger.warn('晚安消息发送失败', { status: result.status, error: result.error })
+        }
+      },
+    },
+  },
   events: {
-    'qq.group.robot_added': () => '哼哼，我是由美咕噜超可爱会长设计的吉星派对看板娘喵，大家可以@我来抽角色玩',
+    'qq.group.robot_added': async ({ session, ctx }) => {
+      if (session.targetId) await ctx.kv.put(`goodnight-group:${session.targetId}`, '1')
+      return '哼哼，我是由美咕噜超可爱会长设计的吉星派对看板娘喵，大家可以@我来抽角色玩'
+    },
+    'qq.group.robot_removed': async ({ session, ctx }) => {
+      if (session.targetId) await ctx.kv.delete(`goodnight-group:${session.targetId}`)
+    },
     'qq.group.member_added': async ({ session, ctx }) => {
       if (!session.userId) {
         ctx.logger.warn('群成员加入事件缺少成员标识，无法发送欢迎语')
@@ -32,6 +50,11 @@ export default definePlugin<Config>({
     },
     'qq.group.at_message': async ({ session, ctx }) => {
       if (!session.atMe || session.addressedToOthers) return
+      if (session.targetId) {
+        const key = `goodnight-group:${session.targetId}`
+        try { if (!await ctx.kv.get(key)) await ctx.kv.put(key, '1') }
+        catch (error) { ctx.logger.warn('保存晚安消息群失败', { error: String(error) }) }
+      }
       const content = session.content.trim()
       if (content && !/^(?:抽角色|换一个)[\s！!。.?？]*$/.test(content)) {
         return '当前看板娘只支持抽角色喵'
