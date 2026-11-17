@@ -20,6 +20,16 @@ export default definePlugin<Config>({
   },
   defaultConfig: { characters: '太刀侠\n0大人\n蒸蛋\n邦尼\n雪莉\n露露\n蓝海晴' },
   cron: {
+    goodmorning: {
+      cron: '0 0 * * *', // 北京时间 08:00
+      async handler({ ctx }) {
+        for (const key of await ctx.kv.list('goodnight-group:')) {
+          const groupId = key.slice('goodnight-group:'.length)
+          const result = await ctx.api.sendMessage({ scene: 'group', id: groupId }, '大家早上好喵，今天也要开开心心哦')
+          if (!result.ok) ctx.logger.warn('早安消息发送失败', { status: result.status, error: result.error })
+        }
+      },
+    },
     goodnight: {
       cron: '50 14 * * *', // 北京时间 22:50
       async handler({ ctx }) {
