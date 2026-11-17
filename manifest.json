@@ -32,6 +32,10 @@
   "buttons": [],
   "cron": [
     {
+      "name": "goodmorning",
+      "cron": "0 0 * * *"
+    },
+    {
       "name": "goodnight",
       "cron": "50 14 * * *"
     }
